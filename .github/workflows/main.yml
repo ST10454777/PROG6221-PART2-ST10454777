@@ -1,7 +1,1 @@
-name: CI
-"on": push
-jobs:
-build:
-runs-on: ubuntu-latest
-steps:
-- run: echo "Green ST10454777"
+{"name": "CI", "on": {"push": {"branches": ["main"]}}, "jobs": {"build": {"runs-on": "ubuntu-latest", "steps": [{"run": "echo Green ST10454777"}]}}}
