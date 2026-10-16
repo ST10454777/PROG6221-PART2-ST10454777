@@ -1,9 +1,9 @@
 name: CI
-on:
+"on":
 push:
 branches: [ "main" ]
 jobs:
 build:
 runs-on: ubuntu-latest
 steps:
-- run: echo "CI green for ST10454777"
+- run: echo "Green for ST10454777"
