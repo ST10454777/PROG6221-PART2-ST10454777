@@ -1,0 +1,67 @@
+using System;
+using System.Media;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+
+namespace CybersecurityChatbotGUI
+{
+public partial class MainWindow : Window
+{
+private ChatbotEngine engine;
+
+public MainWindow()
+{
+InitializeComponent();
+engine = new ChatbotEngine();
+
+// Voice greeting - Task 1 requirement
+try
+{
+var player = new SoundPlayer("greeting.wav");
+player.Play();
+}
+catch { /* file not found - will still work */ }
+
+AddBotMessage("Hello! I'm your Cybersecurity Awareness Chatbot. What's your name? Also tell me your favourite cybersecurity topic?");
+}
+
+private void SendButton_Click(object sender, RoutedEventArgs e) => ProcessInput();
+private void UserInputBox_KeyDown(object sender, KeyEventArgs e) { if (e.Key == Key.Enter) ProcessInput(); }
+
+private void ProcessInput()
+{
+string input = UserInputBox.Text.Trim();
+if (string.IsNullOrEmpty(input)) return;
+
+AddUserMessage(input);
+UserInputBox.Clear();
+
+try
+{
+string response = engine.GetResponse(input);
+AddBotMessage(response);
+MemoryLabel.Text = $"Memory: Name={engine.UserName?? "Unknown"} | Favourite={engine.FavTopic?? "None"} | LastTopic={engine.LastTopic?? "None"}";
+}
+catch (Exception)
+{
+AddBotMessage("Oops, something went wrong internally, but I'm still running. Could you rephrase?");
+}
+}
+
+private void AddUserMessage(string text)
+{
+var tb = new TextBlock { Text = $"You: {text}", Margin=new Thickness(5), FontWeight=FontWeights.Bold, TextWrapping=TextWrapping.Wrap };
+ChatPanel.Children.Add(tb);
+ChatScroll.ScrollToEnd();
+}
+private void AddBotMessage(string text)
+{
+var border = new Border { Background=new SolidColorBrush(Color.FromRgb(224,242,254)), CornerRadius=new CornerRadius(8), Margin=new Thickness(5), Padding=new Thickness(10) };
+border.Child = new TextBlock { Text = $"Bot: {text}", TextWrapping=TextWrapping.Wrap };
+ChatPanel.Children.Add(border);
+ChatScroll.ScrollToEnd();
+}
+}
+}
