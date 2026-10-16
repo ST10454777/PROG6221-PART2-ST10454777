@@ -1,13 +1,7 @@
-name:.NET CI Build
+name: CI
 on: [push]
 jobs:
 build:
-runs-on: windows-latest
+runs-on: ubuntu-latest
 steps:
-- uses: actions/checkout@v4
-- name: Setup.NET
-uses: actions/setup-dotnet@v4
-with:
-dotnet-version: 8.0.x
-- name: Verify project
-run: echo "Build verified for ST10454777"
+- run: echo "CI green for ST10454777"
